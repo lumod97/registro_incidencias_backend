@@ -1,0 +1,55 @@
+.container {
+    margin-top: 20px;
+  }
+  
+  .full-width-div {
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  .box {
+    background-color: #e9ecef;
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 20px;
+    margin: 10px 0;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+  }
+  
+  p {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 columnas */
+    gap: 5px; /* Espacio entre celdas */
+  }
+
+  .grid-item:first-child {
+    background-color: #f8c34a; /* Color mostaza suave */
+    padding: 20px; /* Espaciado interno */
+    text-align: center; /* Centrar texto */
+    border-radius: 5px; /* Bordes redondeados */
+    color: #797979;
+  }
+  
+  .grid-item {
+    background-color: #f8c34a; /* Color mostaza suave */
+    padding: 20px; /* Espaciado interno */
+    text-align: center; /* Centrar texto */
+    border-radius: 5px; /* Bordes redondeados */
+  }
+  
+  .month {
+    background-color: #f7a300; /* Color más acentuado para el mes */
+    font-weight: bold; /* Texto en negrita */
+  }
+  
