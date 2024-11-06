@@ -35,7 +35,7 @@
                     <th mat-header-cell *matHeaderCellDef> FECHA RESUELTO </th>
                     <td mat-cell *matCellDef="let ticket"> {{ ticket.fecha_resuelto}} </td>
                 </ng-container>
-                <ng-container matColumnDef="id">
+                <!-- <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef> ID </th>
                     <td mat-cell *matCellDef="let ticket"> {{ ticket.id }} </td>
                 </ng-container>
@@ -46,7 +46,7 @@
                 <ng-container matColumnDef="cargo">
                     <th mat-header-cell *matHeaderCellDef> CARGO </th>
                     <td mat-cell *matCellDef="let ticket"> {{ ticket.cargo }} </td>
-                </ng-container>
+                </ng-container> -->
                 <ng-container matColumnDef="prioridad">
                     <th mat-header-cell *matHeaderCellDef> PRIORIDAD </th>
                     <td mat-cell *matCellDef="let ticket"> {{ ticket.prioridad }} </td>
@@ -62,11 +62,11 @@
                 <!-- Añadir más columnas según sea necesario -->
 
                 <tr mat-header-row
-                    *matHeaderRowDef="['catic', 'descripcion', 'fecha_creacion', 'fecha_cierre', 'fecha_resuelto', 'id', 'user_name', 'cargo', 'prioridad', 'estado', 'tipo']">
+                    *matHeaderRowDef="['catic', 'descripcion', 'fecha_creacion', 'fecha_cierre', 'fecha_resuelto', 'prioridad', 'estado', 'tipo']">
                 </tr>
                 <!-- <tr (dblclick)="onRowDoubleClick(row.id)" mat-row *matRowDef="let row; columns: ['catic', 'descripcion', 'fecha_creacion', 'fecha_cierre', 'fecha_resuelto', 'id', 'user_name', 'cargo', 'prioridad', 'estado', 'tipo'];"></tr> -->
                 <tr mat-row
-                    *matRowDef="let row; columns: ['catic', 'descripcion', 'fecha_creacion', 'fecha_cierre', 'fecha_resuelto', 'id', 'user_name', 'cargo', 'prioridad', 'estado', 'tipo'];">
+                    *matRowDef="let row; columns: ['catic', 'descripcion', 'fecha_creacion', 'fecha_cierre', 'fecha_resuelto', 'prioridad', 'estado', 'tipo'];">
                 </tr>
             </table>
 
