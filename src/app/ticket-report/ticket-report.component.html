@@ -1,4 +1,4 @@
-<div>
+<div class="mt-5">
     <form [formGroup]="reportForm" (ngSubmit)="onSubmit()">
       <mat-form-field>
         <mat-label>Fecha Desde</mat-label>
@@ -19,7 +19,7 @@
   
     <div *ngIf="loading" class="loader">Cargando...</div>
   
-    <table mat-table [dataSource]="tickets">
+    <table mat-table [dataSource]="tickets" class="w-100">
       <!-- Definir columnas de la tabla aquí -->
       <ng-container matColumnDef="user">
         <th mat-header-cell *matHeaderCellDef> Usuario </th>
@@ -59,10 +59,10 @@
       </ng-container>
       <!-- Añadir más columnas según sea necesario -->
   
-      <tr mat-header-row *matHeaderRowDef="['user', 'charge', 'news', 'assigneds', 'in_course', 'pending', 'solved', 'closed', 'cancelled']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['user', 'charge', 'news', 'assigneds', 'in_course', 'pending', 'solved', 'closed', 'cancelled'];"></tr>
+      <tr mat-header-row *matHeaderRowDef="['user', 'charge', 'news', 'assigneds', 'in_course', 'pending', 'solved', 'closed', 'cancelled']" ></tr>
+      <tr (dblclick)="onRowDoubleClick(row.id)" mat-row *matRowDef="let row; columns: ['user', 'charge', 'news', 'assigneds', 'in_course', 'pending', 'solved', 'closed', 'cancelled'];"></tr>
     </table>
   
-    <mat-paginator [length]="totalRecords" [pageSize]="limit" (page)="changePage($event)"></mat-paginator>
+    <!-- <mat-paginator [length]="totalRecords" [pageSize]="limit" (page)="changePage($event)"></mat-paginator> -->
   </div>
   
