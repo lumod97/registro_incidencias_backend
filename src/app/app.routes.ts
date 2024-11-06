@@ -7,7 +7,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
 export const appRoutes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'resume', component: ResumeComponent },
-  { path: 'resume_details', component: ResumeDetailsComponent },
+  { path: 'resume_details/:id', component: ResumeDetailsComponent },
   { path: 'notifications', component: NotificationsComponent },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ];

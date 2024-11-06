@@ -78,7 +78,6 @@ export class TicketReportComponent implements OnInit {
 
   // Método para manejar el doble clic en una fila
   onRowDoubleClick(ticketId: number): void {
-    // this.router.navigate(['/detalles-ticket', ticketId]); // Navega a la ruta con el ID
-    alert(ticketId)
+    this.router.navigate(['/resume_details', ticketId]);
   }
 }

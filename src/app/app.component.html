@@ -25,7 +25,7 @@
             <a class="nav-link position-relative me-5 d-none d-lg-block cursor-pointer" (click)="openNotificationModal()">
               <i class="fas fa-bell"></i> <!-- Ícono de campana -->
               <span class="position-absolute top-10 start-100 translate-middle badge rounded-pill bg-danger">
-                5 <!-- Número de alertas -->
+                2 <!-- Número de alertas -->
               </span>
             </a>
           </li>
@@ -40,9 +40,15 @@
     </div>
   </nav>
 
-  <div class="container flex-grow-1 d-flex align-items-center justify-content-center">
-    <router-outlet></router-outlet> <!-- Aquí se cargarán las vistas dinámicas -->
+  <!-- Contenedor principal ancho completo -->
+  <div class="flex-grow-1 d-flex mt-5">
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
   </div>
+  <!-- <div class="container-fluid ps-5 flex-grow-1 d-flex mt-5"> -->
+    <!-- <router-outlet></router-outlet> -->
+  <!-- </div> -->
 
   <!-- Footer -->
   <footer class="bg-light text-center text-lg-start mt-4">
