@@ -39,8 +39,8 @@ export class TicketReportComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.reportForm = this.fb.group({
-      dateFrom: ['2024-10-07'],
-      dateTo: ['2024-10-13']
+      dateFrom: [new Date(Date.UTC(2024, 7, 2))], // 1 de agosto de 2024 en UTC
+      dateTo: [new Date()] // Fecha actual o cualquier otra fecha que desees
     });
   }
 
