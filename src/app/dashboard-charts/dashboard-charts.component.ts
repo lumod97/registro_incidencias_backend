@@ -1,10 +1,13 @@
-import { Component, ViewChild } from '@angular/core';
-import { Chart, ChartType, registerables } from 'chart.js';
 import { CommonModule } from '@angular/common'; // Importar CommonModule
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'; // Importar FormBuilder y FormGroup
+import { MatTooltipModule } from '@angular/material/tooltip'; // Importar MatTooltipModule
+import { Chart, ChartType, registerables } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'; // Importar el plugin
 import { BaseChartDirective } from 'ng2-charts';
-import { FormBuilder, FormGroup } from '@angular/forms'; // Importar FormBuilder y FormGroup
-import { ReactiveFormsModule } from '@angular/forms';
+import axiosInstance from '../axios-config'; // Importa la configuración de Axios
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Importa el módulo de spinner
+
 
 
 Chart.register(...registerables);
@@ -13,14 +16,14 @@ Chart.register(ChartDataLabels); // Registrar el plugin de datalabels
 @Component({
   selector: 'app-dashboard-charts',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective, ReactiveFormsModule],
+  imports: [CommonModule, BaseChartDirective, ReactiveFormsModule, MatTooltipModule, MatTooltipModule, MatProgressSpinnerModule],
   templateUrl: './dashboard-charts.component.html',
   styleUrls: ['./dashboard-charts.component.css']
 })
 export class DashboardChartsComponent {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective; // Propiedad para el gráfico
   filterForm: FormGroup;
-  
+
   items = [
     { title: 'ADMIN..', percentage: 0.00 },
     { title: 'CRÉDITOS', percentage: 100.00 },
@@ -34,7 +37,11 @@ export class DashboardChartsComponent {
   ];
 
   // Propiedad values
-  values: any[] = []; // Cambia 'any' por el tipo adecuado
+  monthlyValues: any[] = []; // Cambia 'any' por el tipo adecuado
+
+  // Estado de carga inicial
+  isLoading = false;
+
 
   // Datos del gráfico
   chartLabels: string[] = ['Atendidas', 'En Proceso', 'Pendientes'];
@@ -65,68 +72,113 @@ export class DashboardChartsComponent {
   constructor(private fb: FormBuilder) {
     // Inicializar el formulario
     this.filterForm = this.fb.group({
-      year: [''], // Campo para el año
+      anio: ['2024'], // Campo para el año
       month: [''] // Campo para el mes
     });
 
-    // Inicializar values
-    this.values = this.getValues();
-
     // Suscribirse a los cambios en el formulario
     this.filterForm.valueChanges.subscribe(value => {
-      this.updateData(value.year, value.month);
+      this.updateData(value.anio, value.month);
     });
   }
 
-  // Método para obtener los valores
-  getValues(): any[] {
-    return [
-      { name: 'Item 1', value: 56 },
-      { name: 'Item 2', value: 152 },
-      { name: 'Item 3', value: 134 },
-      { name: 'Item 4', value: 73 },
-      { name: 'Item 5', value: 251 },
-      { name: 'Item 6', value: 196 },
-    ];
-  }
-
-  // Método para actualizar los datos y el mes actual basado en la selección
-  updateData(year: string, month: string) {
-    console.log('Updating data for:', year, month); // Verifica los valores
-    this.currentMonth = month || new Date().toLocaleString('default', { month: 'long' }).toUpperCase();
-    const monthIndex = month ? this.getMonthIndex(month) : 0; 
-    this.chartData.datasets[0].data = this.getDataForMonth(monthIndex);
-  
-    if (this.chart) {
-      this.chart.update(); 
+  // Método asíncrono para inicializar los valores
+  async initializeValues() {
+    this.isLoading = true; // Mostrar loader
+    try {
+      const [monthlyValues, statusStats] = await Promise.all([
+        this.getMonthlyValues(),
+        this.getStatusStatsMonthlyValues()
+      ]);
+      this.monthlyValues = monthlyValues;
+    } catch (error) {
+      console.error('Error al inicializar valores:', error);
+    } finally {
+      this.isLoading = false; // Ocultar loader
     }
   }
   
+
+  async getMonthlyValues(): Promise<any[]> {
+    // Inicializar un arreglo vacío para los valores
+    let monthlyValues: any[] = [];
+
+    // Hacer la solicitud POST a la API
+    try {
+      const response = await axiosInstance.post('/tickets/get-ticket-statistics-per-month', {
+        anio: parseInt(this.filterForm.value.anio, 10), // Convertir a int
+        month: (this.filterForm.value.month ? this.getMonthIndex(this.filterForm.value.month) : 0) + 1
+      });
+
+      // Procesar la respuesta y convertirla al formato deseado
+      monthlyValues = [
+        { name: 'Bajo', value: response.data.low },
+        { name: 'Medio', value: response.data.medium },
+        { name: 'Alto', value: response.data.high },
+        { name: 'Crítico', value: response.data.critical },
+      ];
+
+      if (this.chart) {
+        this.chart.update();
+      }
+    } catch (error) {
+      console.error('Error al obtener los valores mensuales:', error);
+    }
+
+    return monthlyValues; // Retornar los valores formateados
+  }
+
+  async getStatusStatsMonthlyValues() {
+    // Inicializar un arreglo vacío para los valores
+    let monthlyValues: any[] = [];
+
+    // Hacer la solicitud POST a la API
+    try {
+      const response = await axiosInstance.post('/tickets/get-ticket-statistics-per-status-monthly', {
+        anio: parseInt(this.filterForm.value.anio, 10), // Convertir a int
+        month: (this.filterForm.value.month ? this.getMonthIndex(this.filterForm.value.month) : 0) + 1
+      });
+
+      monthlyValues = [
+        { name: 'Nuevo', value: response.data.new_ticket, color: '#73fc9f', hoverColor: '#54b77d' },
+        { name: 'Asignado', value: response.data.assigned, color: '#73d1fc', hoverColor: '#55a4d6' },
+        { name: 'En curso', value: response.data.in_course, color: '#9e73fc', hoverColor: '#8b5bc6' },
+        { name: 'Pendiente', value: response.data.pending, color: '#fc9e73', hoverColor: '#d98b54' },
+        { name: 'Resuelto', value: response.data.solved, color: '#aefc73', hoverColor: '#8cbd54' },
+        { name: 'Cerrado', value: response.data.closed, color: '#fc738c', hoverColor: '#d86e7e' },
+        { name: 'Cancelado', value: response.data.canceled, color: '#dc143c', hoverColor: '#b80f30' },
+      ];
+
+      // Actualizar los datos del gráfico
+      this.chartData.datasets[0].data = monthlyValues.map(item => item.value); // Asigna solo los valores al gráfico
+      this.chartData.labels = monthlyValues.map(item => item.name); // Asigna solo los valores al gráfico
+      this.chartData.datasets[0].backgroundColor = monthlyValues.map(item => item.color); // Asigna solo los valores al gráfico
+      this.chartData.datasets[0].hoverBackgroundColor = monthlyValues.map(item => item.hoverColor); // Asigna solo los valores al gráfico
+      console.log(response)
+      if (this.chart) {
+        this.chart.update();
+      }
+    } catch (error) {
+      console.error('Error al obtener los valores mensuales:', error);
+    }
+  }
+
+  // Método para actualizar los datos y el mes actual basado en la selección
+  async updateData(anio: string, month: string) {
+    this.currentMonth = month || new Date().toLocaleString('default', { month: 'long' }).toUpperCase();
+    const monthIndex = (month ? this.getMonthIndex(month) : 0) + 1;
+
+    console.log('Updating data for:', anio, monthIndex + 1); // Verifica los valores
+    await this.initializeValues(); // Esperar a que se inicialicen los valores
+
+    if (this.chart) {
+      this.chart.update();
+    }
+  }
 
   // Método para obtener el índice del mes
   getMonthIndex(month: string): number {
     const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     return months.indexOf(month);
   }
-
-  // Método para obtener datos en función del mes
-  getDataForMonth(monthIndex: number): number[] {
-    const data = [
-      [63, 17, 20], // Enero
-      [50, 30, 20], // Febrero
-      [70, 20, 10], // Marzo
-      [80, 10, 10], // Abril
-      [40, 30, 30], // Mayo
-      [90, 5, 5],   // Junio
-      [60, 20, 20], // Julio
-      [75, 15, 10], // Agosto
-      [55, 25, 20], // Septiembre
-      [85, 10, 5],  // Octubre
-      [95, 3, 2],   // Noviembre
-      [100, 0, 0],  // Diciembre
-    ];
-    console.log('Data for month index', monthIndex, 'is', data[monthIndex]); // Verifica los datos
-    return data[monthIndex] || data[0]; 
-  }
-  
 }

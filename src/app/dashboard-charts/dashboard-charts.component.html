@@ -1,11 +1,22 @@
 <div class="container" [formGroup]="filterForm"> <!-- Vincula el formulario -->
+
+    <div *ngIf="isLoading" class="loader-container">
+        <!-- Spinner de carga, puedes usar cualquier ícono o animación -->
+        <mat-spinner></mat-spinner>
+      </div>
+      
+      <!-- Tu contenido se muestra cuando isLoading es false -->
+      <div *ngIf="!isLoading">
+        <!-- Contenido del componente, por ejemplo el gráfico -->
+      </div>
+      
     <!-- Fila de Filtros -->
     <div class="row mb-3">
         <div class="col-6">
-            <label for="year">Año:</label>
-            <select id="year" formControlName="year" class="form-select">
+            <label for="anio">Año:</label>
+            <select id="anio" formControlName="anio" class="form-select">
                 <option value="">Seleccione un año</option>
-                <option *ngFor="let year of [2020, 2021, 2022, 2023, 2024]" [value]="year">{{ year }}</option>
+                <option *ngFor="let anio of [2020, 2021, 2022, 2023, 2024]" [value]="anio">{{ anio }}</option>
             </select>
         </div>
         <div class="col-6">
@@ -23,7 +34,7 @@
         <h2 class="text-center">Datos por Mes</h2> <!-- Título de la fila -->
         <div class="grid-container">
           <div class="grid-item month">{{ currentMonth }}</div>
-          <div class="grid-item" *ngFor="let value of values">{{ value.value }}</div>
+          <div class="grid-item" matTooltip="{{ value.name }}" matTooltipPosition="above" *ngFor="let value of monthlyValues">{{ value.value }}</div>
         </div>
       </div>
     </div>

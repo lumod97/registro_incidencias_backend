@@ -1,0 +1,68 @@
+<div>
+    <form [formGroup]="reportForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Fecha Desde</mat-label>
+        <input matInput [matDatepicker]="picker1" formControlName="dateFrom">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label>Fecha Hasta</mat-label>
+        <input matInput [matDatepicker]="picker2" formControlName="dateTo">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+  
+      <button type="submit" mat-raised-button color="primary">Buscar</button>
+    </form>
+  
+    <div *ngIf="loading" class="loader">Cargando...</div>
+  
+    <table mat-table [dataSource]="tickets">
+      <!-- Definir columnas de la tabla aquí -->
+      <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef> Usuario </th>
+        <td mat-cell *matCellDef="let ticket"> {{ ticket.user }} </td>
+      </ng-container>
+      <ng-container matColumnDef="charge">
+        <th mat-header-cell *matHeaderCellDef> Cargo </th>
+        <td mat-cell *matCellDef="let ticket"> {{ ticket.charge }} </td>
+      </ng-container>
+      <ng-container matColumnDef="news">
+        <th mat-header-cell *matHeaderCellDef> Nuevos </th>
+        <td mat-cell *matCellDef="let ticket"> {{ ticket.news }} </td>
+      </ng-container>
+      <ng-container matColumnDef="assigneds">
+        <th mat-header-cell *matHeaderCellDef> Asignados </th>
+        <td mat-cell *matCellDef="let ticket"> {{ ticket.assigneds }} </td>
+      </ng-container>
+      <ng-container matColumnDef="in_course">
+        <th mat-header-cell *matHeaderCellDef> En Curso </th>
+        <td mat-cell *matCellDef="let ticket"> {{ ticket.in_course }} </td>
+      </ng-container>
+      <ng-container matColumnDef="pending">
+        <th mat-header-cell *matHeaderCellDef> Pendientes </th>
+        <td mat-cell *matCellDef="let ticket"> {{ ticket.pending }} </td>
+      </ng-container>
+      <ng-container matColumnDef="solved">
+        <th mat-header-cell *matHeaderCellDef> Resueltos </th>
+        <td mat-cell *matCellDef="let ticket"> {{ ticket.solved }} </td>
+      </ng-container>
+      <ng-container matColumnDef="closed">
+        <th mat-header-cell *matHeaderCellDef> Cerrados </th>
+        <td mat-cell *matCellDef="let ticket"> {{ ticket.closed }} </td>
+      </ng-container>
+      <ng-container matColumnDef="cancelled">
+        <th mat-header-cell *matHeaderCellDef> Cancelados </th>
+        <td mat-cell *matCellDef="let ticket"> {{ ticket.cancelled }} </td>
+      </ng-container>
+      <!-- Añadir más columnas según sea necesario -->
+  
+      <tr mat-header-row *matHeaderRowDef="['user', 'charge', 'news', 'assigneds', 'in_course', 'pending', 'solved', 'closed', 'cancelled']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['user', 'charge', 'news', 'assigneds', 'in_course', 'pending', 'solved', 'closed', 'cancelled'];"></tr>
+    </table>
+  
+    <mat-paginator [length]="totalRecords" [pageSize]="limit" (page)="changePage($event)"></mat-paginator>
+  </div>
+  
