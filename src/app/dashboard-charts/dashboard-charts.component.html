@@ -1,0 +1,65 @@
+<div class="container" [formGroup]="filterForm"> <!-- Vincula el formulario -->
+
+    <div *ngIf="isLoading" class="loader-container">
+        <!-- Spinner de carga, puedes usar cualquier ícono o animación -->
+        <mat-spinner></mat-spinner>
+      </div>
+      
+      <!-- Tu contenido se muestra cuando isLoading es false -->
+      <div *ngIf="!isLoading">
+        <!-- Contenido del componente, por ejemplo el gráfico -->
+      </div>
+      
+    <!-- Fila de Filtros -->
+    <div class="row mb-3">
+        <div class="col-6">
+            <label for="anio">Año:</label>
+            <select id="anio" formControlName="anio" class="form-select">
+                <option value="">Seleccione un año</option>
+                <option *ngFor="let anio of [2020, 2021, 2022, 2023, 2024]" [value]="anio">{{ anio }}</option>
+            </select>
+        </div>
+        <div class="col-6">
+            <label for="month">Mes:</label>
+            <select id="month" formControlName="month" class="form-select">
+                <option value="">Seleccione un mes</option>
+                <option *ngFor="let month of ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']" [value]="month">{{ month }}</option>
+            </select>
+        </div>
+    </div>
+  
+    <div class="row">
+        <!-- Fila que ocupa las dos columnas -->
+      <div class="col-12">
+        <h2 class="text-center">Datos por Mes</h2> <!-- Título de la fila -->
+        <div class="grid-container">
+          <div class="grid-item month">{{ currentMonth }}</div>
+          <div class="grid-item" matTooltip="{{ value.name }}" matTooltipPosition="above" *ngFor="let value of monthlyValues">{{ value.value }}</div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row mt-5">
+        <!-- Segunda Fila - Columna 1 (9 Cuadros) -->
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4" *ngFor="let item of items">
+                    <div class="box" [ngStyle]="{'background-color': getBackgroundColor(item.percentage)}">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.percentage }}%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+        <!-- Columna 2 (Gráfico) -->
+        <div class="col-6">
+            <canvas baseChart
+                [datasets]="chartData.datasets"
+                [labels]="chartData.labels"
+                [type]="chartType"
+                [options]="{ responsive: true }">
+            </canvas>
+        </div>
+    </div>
+</div>
