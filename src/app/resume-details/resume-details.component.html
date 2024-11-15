@@ -1,18 +1,54 @@
 <div>
     <mat-card>
-        <!-- Encabezado de la tarjeta con la información del usuario -->
-        <mat-card-header>
-            <mat-card-title>
-                <h3>{{ dataUser[0].user_name + ' ' + dataUser[0].user_last_name }}</h3>
-            </mat-card-title>
-            <mat-card-subtitle>
-                <h5>{{ dataUser[0].cargo }}</h5>
-            </mat-card-subtitle>
+        <!-- Encabezado de la tarjeta con la información del usuario y espacio para indicadores -->
+        <mat-card-header class="header-container">
+            <div class="user-info">
+                <mat-card-title>
+                    <h3>{{ dataUser[0].user_name ?? '' +  '' + ' ' + dataUser[0].user_last_name ?? '' }}</h3>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <h5>{{ dataUser[0].cargo }}</h5>
+                </mat-card-subtitle>
+            </div>
+
+            <!-- Espacio para indicadores al lado del usuario -->
+            <!-- <div class="indicators">
+                <span>Meta: {{dataUser[0].meta}}</span>
+                <span>Resueltos: {{dataUser[0].totalResueltos}}</span>
+                <span>Porcentaje Meta: {{dataUser[0].porcentajeMeta}}%</span>
+            </div> -->
+            <div class="indicators">
+                <div class="indicator">
+                    <span class="indicator-title">Meta:</span>
+                    <span class="indicator-value">{{dataUser[0].meta}}</span>
+                </div>
+                <div class="indicator">
+                    <span class="indicator-title">Solicitudes Resueltas:</span>
+                    <span class="indicator-value">{{dataUser[0].totalSolicitudesResueltos}}</span>
+                </div>
+                <div class="indicator">
+                    <span class="indicator-title">Solicitudes Asignadas:</span>
+                    <span class="indicator-value">{{dataUser[0].totalSolicitudesAsignados}}</span>
+                </div>
+                <div class="indicator">
+                    <span class="indicator-title">Incidencias Resueltas:</span>
+                    <span class="indicator-value">{{dataUser[0].totalIncidenciasResueltos}}</span>
+                </div>
+                <div class="indicator">
+                    <span class="indicator-title">Incidencias Asignadas:</span>
+                    <span class="indicator-value">{{dataUser[0].totalIncidenciasAsignados}}</span>
+                </div>
+            
+                <!-- Barra de progreso en fila separada -->
+                <div class="progress-bar">
+                    <div class="progress" [style.width]="dataUser[0].porcentajeMeta + '%'"></div>
+                </div>
+            </div>
+            
         </mat-card-header>
 
         <!-- Contenido de la tarjeta: tabla -->
         <mat-card-content>
-
             <table mat-table [dataSource]="dataUser" class="mt-3">
                 <!-- Definir columnas de la tabla aquí -->
                 <ng-container matColumnDef="catic">
@@ -35,18 +71,6 @@
                     <th mat-header-cell *matHeaderCellDef> FECHA RESUELTO </th>
                     <td mat-cell *matCellDef="let ticket"> {{ ticket.fecha_resuelto}} </td>
                 </ng-container>
-                <!-- <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef> ID </th>
-                    <td mat-cell *matCellDef="let ticket"> {{ ticket.id }} </td>
-                </ng-container>
-                <ng-container matColumnDef="user_name">
-                    <th mat-header-cell *matHeaderCellDef> USUARIO </th>
-                    <td mat-cell *matCellDef="let ticket"> {{ ticket.user_name + ' '+ ticket.user_last_name }} </td>
-                </ng-container>
-                <ng-container matColumnDef="cargo">
-                    <th mat-header-cell *matHeaderCellDef> CARGO </th>
-                    <td mat-cell *matCellDef="let ticket"> {{ ticket.cargo }} </td>
-                </ng-container> -->
                 <ng-container matColumnDef="prioridad">
                     <th mat-header-cell *matHeaderCellDef> PRIORIDAD </th>
                     <td mat-cell *matCellDef="let ticket"> {{ ticket.prioridad }} </td>
@@ -59,17 +83,15 @@
                     <th mat-header-cell *matHeaderCellDef> TIPO </th>
                     <td mat-cell *matCellDef="let ticket"> {{ ticket.tipo }} </td>
                 </ng-container>
-                <!-- Añadir más columnas según sea necesario -->
 
                 <tr mat-header-row
                     *matHeaderRowDef="['catic', 'descripcion', 'fecha_creacion', 'fecha_cierre', 'fecha_resuelto', 'prioridad', 'estado', 'tipo']">
                 </tr>
-                <!-- <tr (dblclick)="onRowDoubleClick(row.id)" mat-row *matRowDef="let row; columns: ['catic', 'descripcion', 'fecha_creacion', 'fecha_cierre', 'fecha_resuelto', 'id', 'user_name', 'cargo', 'prioridad', 'estado', 'tipo'];"></tr> -->
+
                 <tr mat-row
                     *matRowDef="let row; columns: ['catic', 'descripcion', 'fecha_creacion', 'fecha_cierre', 'fecha_resuelto', 'prioridad', 'estado', 'tipo'];">
                 </tr>
             </table>
-
         </mat-card-content>
     </mat-card>
 </div>

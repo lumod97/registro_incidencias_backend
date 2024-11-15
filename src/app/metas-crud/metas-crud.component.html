@@ -1,0 +1,123 @@
+<div class="container mt-4">
+    <h2>Gestión de Metas</h2>
+  
+    <!-- Formulario de filtros -->
+    <form class="mb-4">
+      <div class="row">
+        <div class="col-md-3">
+          <label for="filterPeriodo" class="form-label">Filtrar por Periodo</label>
+          <input
+            type="text"
+            id="filterPeriodo"
+            class="form-control"
+            [(ngModel)]="filter.periodo"
+            name="filterPeriodo"
+          />
+        </div>
+        <div class="col-md-3">
+          <label for="filterUserId" class="form-label">Filtrar por User ID</label>
+          <input
+            type="text"
+            id="filterUserId"
+            class="form-control"
+            [(ngModel)]="filter.userId"
+            name="filterUserId"
+          />
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+          <button
+            type="button"
+            class="btn btn-primary w-100"
+            (click)="getDataMetas()"
+          >
+            Buscar
+          </button>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+          <button
+            type="button"
+            class="btn btn-success w-100"
+            (click)="openAddMetaModal()"
+          >
+            <i class="fas fa-plus"></i> <!-- Ícono de añadir -->
+          </button>
+        </div>
+      </div>
+    </form>
+  
+    <!-- Tabla de Metas -->
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Periodo</th>
+          <th>Usuario</th>
+          <th>Meta</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let meta of metas; let i = index">
+            <td>{{ meta.periodo }}</td>
+            <td>{{ meta.name }}</td>
+            <td>{{ meta.meta }}</td>
+            <td>
+              <button class="btn btn-danger" (click)="deleteMeta(i)">Eliminar</button>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+  
+    <!-- Modal para agregar una nueva meta -->
+    <div class="modal fade" id="addMetaModal" tabindex="-1" aria-labelledby="addMetaModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addMetaModalLabel">Agregar Nueva Meta</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form #modalForm="ngForm">
+              <div class="mb-3">
+                <label for="periodo" class="form-label">Periodo</label>
+                <input
+                  type="text"
+                  id="periodo"
+                  class="form-control"
+                  [(ngModel)]="newMeta.periodo"
+                  name="periodo"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="userId" class="form-label">User ID</label>
+                <input
+                  type="text"
+                  id="userId"
+                  class="form-control"
+                  [(ngModel)]="newMeta.userId"
+                  name="userId"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="meta" class="form-label">Meta</label>
+                <input
+                  type="number"
+                  id="meta"
+                  class="form-control"
+                  [(ngModel)]="newMeta.meta"
+                  name="meta"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" (click)="addMeta()">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
