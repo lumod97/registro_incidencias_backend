@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'; // Importar CommonModule
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'; // Importar FormBuilder y FormGroup
 import { MatTooltipModule } from '@angular/material/tooltip'; // Importar MatTooltipModule
 import { Chart, ChartType, registerables } from 'chart.js';
@@ -8,14 +8,13 @@ import { BaseChartDirective } from 'ng2-charts';
 import axiosInstance from '../axios-config'; // Importa la configuración de Axios
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Importa el módulo de spinner
 
-
-
 Chart.register(...registerables);
 Chart.register(ChartDataLabels); // Registrar el plugin de datalabels
 
 @Component({
   selector: 'app-dashboard-charts',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, BaseChartDirective, ReactiveFormsModule, MatTooltipModule, MatTooltipModule, MatProgressSpinnerModule],
   templateUrl: './dashboard-charts.component.html',
   styleUrls: ['./dashboard-charts.component.css']
@@ -42,6 +41,9 @@ export class DashboardChartsComponent {
   // Estado de carga inicial
   isLoading = false;
 
+  randomValue(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
   // Datos del gráfico
   chartLabels: string[] = ['Atendidas', 'En Proceso', 'Pendientes'];
@@ -77,14 +79,14 @@ export class DashboardChartsComponent {
     });
 
     // Suscribirse a los cambios en el formulario
-    this.filterForm.valueChanges.subscribe(value => {
-      this.updateData(value.anio, value.month);
-    });
+    // this.filterForm.valueChanges.subscribe(value => {
+    //   // this.updateData(value.anio, value.month);
+    // });
   }
 
   // Método asíncrono para inicializar los valores
   async initializeValues() {
-    this.isLoading = true; // Mostrar loader
+    this.isLoading = false; // Mostrar loader
     try {
       const [monthlyValues, statusStats] = await Promise.all([
         this.getMonthlyValues(),
@@ -97,7 +99,6 @@ export class DashboardChartsComponent {
       this.isLoading = false; // Ocultar loader
     }
   }
-  
 
   async getMonthlyValues(): Promise<any[]> {
     // Inicializar un arreglo vacío para los valores
@@ -163,22 +164,33 @@ export class DashboardChartsComponent {
     }
   }
 
-  // Método para actualizar los datos y el mes actual basado en la selección
-  async updateData(anio: string, month: string) {
-    this.currentMonth = month || new Date().toLocaleString('default', { month: 'long' }).toUpperCase();
-    const monthIndex = (month ? this.getMonthIndex(month) : 0) + 1;
-
-    console.log('Updating data for:', anio, monthIndex + 1); // Verifica los valores
-    await this.initializeValues(); // Esperar a que se inicialicen los valores
-
-    if (this.chart) {
-      this.chart.update();
-    }
-  }
-
-  // Método para obtener el índice del mes
+  // Propiedad para las torres
+  torres = [
+    { name: 'Torre 1', dev: 10, qa: 5, prod: 3, total: 18 },
+    { name: 'Torre 2', dev: 8, qa: 6, prod: 2, total: 16 },
+    { name: 'Torre 3', dev: 5, qa: 7, prod: 4, total: 16 },
+    { name: 'Torre 4', dev: 12, qa: 3, prod: 5, total: 20 },
+    { name: 'Torre 5', dev: 6, qa: 9, prod: 7, total: 22 },
+    { name: 'Torre 6', dev: 7, qa: 4, prod: 6, total: 17 },
+    { name: 'Torre 7', dev: 9, qa: 2, prod: 3, total: 14 },
+    { name: 'Torre 8', dev: 11, qa: 8, prod: 9, total: 28 },
+    { name: 'Torre 9', dev: 4, qa: 5, prod: 4, total: 13 }
+  ];
+  
   getMonthIndex(month: string): number {
-    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const months = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
     return months.indexOf(month);
   }
+
+  // Método para actualizar el gráfico
+  // No es necesario el método updateData en esta versión
+
+  // Llamado a la inicialización al cargar el componente
+  ngOnInit() {
+    this.initializeValues();
+  }
+
 }

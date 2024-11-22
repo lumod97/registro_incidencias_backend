@@ -1,0 +1,52 @@
+<div class="container">
+    <h2>Trabajadores por Torre</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Trabajador</th>
+          <th>Torre</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of trabajadoresTorre">
+          <td>{{ item.id }}</td>
+          <td>{{ item.trabajador }}</td>
+          <td>{{ item.torre }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" (click)="editItem(item)">Editar</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteItem(item.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <h3>{{ isEditing ? 'Editar' : 'Agregar' }} Trabajador</h3>
+    <form (ngSubmit)="saveItem()">
+      <div class="form-group">
+        <label for="trabajador">Trabajador</label>
+        <input
+          type="text"
+          class="form-control"
+          id="trabajador"
+          [(ngModel)]="currentItem.trabajador"
+          name="trabajador"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="torre">Torre</label>
+        <input
+          type="text"
+          class="form-control"
+          id="torre"
+          [(ngModel)]="currentItem.torre"
+          name="torre"
+          required
+        />
+      </div>
+      <button class="btn btn-success">{{ isEditing ? 'Actualizar' : 'Guardar' }}</button>
+    </form>
+  </div>
+  

@@ -1,11 +1,13 @@
 import { Component, OnInit, NgZone, ViewChild, ElementRef, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { NotificationModalComponent } from "./notification-modal/notification-modal.component";
+import { CommonModule } from '@angular/common'; 
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, NotificationModalComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, NotificationModalComponent, CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -13,7 +15,7 @@ export class AppComponent implements OnInit {
   currentTime: string = '';
 
   @ViewChild(NotificationModalComponent) notificationModal!: NotificationModalComponent;
-  constructor(private ngZone: NgZone, @Inject(PLATFORM_ID) private platformId: Object) { } // Inyecta NgZone y PLATFORM_ID
+  constructor(private ngZone: NgZone, @Inject(PLATFORM_ID) private platformId: Object, private router: Router) { } // Inyecta NgZone y PLATFORM_ID
 
   ngOnInit(): void {
     this.updateTime();
@@ -28,6 +30,12 @@ export class AppComponent implements OnInit {
         });
       }, 1000);
     });
+  }
+
+   // Método que verifica si la ruta actual es /login
+   isLoginRoute(): boolean {
+
+    return this.router.url === '/login';
   }
 
   openNotificationModal() {

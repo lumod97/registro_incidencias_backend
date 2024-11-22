@@ -1,6 +1,4 @@
-<!-- Estructura principal usando flexbox para ocupar toda la altura -->
-<div class="d-flex flex-column min-vh-100">
-  <!-- Navbar -->
+<div class="d-flex flex-column min-vh-100" *ngIf="!isLoginRoute()">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" routerLink="/">CAJA PIURA</a>
@@ -9,42 +7,29 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto"> <!-- Los enlaces de navegación alineados a la izquierda -->
+        <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/resume">Registros por trabajador</a>
           </li>
-          <!-- Dropdown para Mantenimientos -->
-          <li class="nav-item dropdown" class="show-on-hover"> <!-- Clase personalizada para hover -->
-            <a
-              class="nav-link dropdown-toggle"
-              id="maintenanceDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
+
+          <li class="nav-item dropdown" class="show-on-hover">
+            <a class="nav-link dropdown-toggle" id="maintenanceDropdown" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               Mantenimientos
             </a>
             <ul class="dropdown-menu" aria-labelledby="maintenanceDropdown">
-              <li><a class="dropdown-item" routerLink="/crud_metas">Metas</a></li>
-              <!-- <li><a class="dropdown-item" routerLink="/maintain_roles">Roles</a></li>
-              <li><a class="dropdown-item" routerLink="/maintain_permissions">Permisos</a></li> -->
+              <li>
+                <a class="dropdown-item" routerLink="/crud_metas">Metas</a>
+                <a class="dropdown-item" routerLink="/trabajadores-torre">Trabajadores por Torre</a>
+                <a class="dropdown-item" routerLink="/torres">Torres</a>
+              </li>
             </ul>
           </li>
         </ul>
-        <!-- <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link position-relative me-5 d-none d-lg-block cursor-pointer" (click)="openNotificationModal()">
-              <i class="fas fa-bell"></i>
-              <span class="position-absolute top-10 start-100 translate-middle badge rounded-pill bg-danger">
-                2
-              </span>
-            </a>
-          </li>
-        </ul> -->
-        <!-- Ítem de Notificaciones que se muestra solo en modo colapsado -->
-        <ul class="navbar-nav d-lg-none"> <!-- Se muestra solo en pantallas pequeñas -->
+        <ul class="navbar-nav d-lg-none">
           <li class="nav-item">
             <a class="nav-link" routerLink="/notifications">Notificaciones</a>
           </li>
@@ -52,25 +37,21 @@
       </div>
     </div>
   </nav>
-  
 
-  <!-- Contenedor principal ancho completo -->
   <div class="flex-grow-1 d-flex mt-5">
     <div class="container-fluid">
       <router-outlet></router-outlet>
     </div>
   </div>
-  <!-- <div class="container-fluid ps-5 flex-grow-1 d-flex mt-5"> -->
-    <!-- <router-outlet></router-outlet> -->
-  <!-- </div> -->
 
-  <!-- Footer -->
   <footer class="bg-light text-center text-lg-start mt-4">
     <div class="container p-4 d-flex justify-content-between align-items-center">
       <p>&copy; 2024 Caticks Manager - Todos los derechos reservados</p>
-      <p>Hora actual: {{ currentTime }}</p> <!-- Reloj alineado a la derecha -->
+      <p>Hora actual: {{ currentTime }}</p> 
     </div>
   </footer>
 
   <app-notification-modal></app-notification-modal>
 </div>
+
+<router-outlet *ngIf="isLoginRoute()"></router-outlet>

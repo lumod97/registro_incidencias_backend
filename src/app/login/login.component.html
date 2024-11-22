@@ -1,0 +1,40 @@
+<div class="masterContainer" [style.background-image]="'url(' + imageUrl + ')'">
+    <div *ngIf="loading" class="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="container" [ngClass]="{ 'right-panel-active': activeForm, 'left-panel-active': !activeForm }" id="container">
+        <div class="form-container sign-up-container">
+            <form novalidate> <!-- Agregar novalidate -->
+                <h1>Crear una cuenta</h1>
+                <input type="text" placeholder="Nombres">
+                <input type="text" placeholder="Usuario">
+                <input type="password" placeholder="Contraseña">
+                <button type="submit">Registrarse</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" novalidate> <!-- Formulario vinculado -->
+                <h1>Iniciar Sesión</h1>
+                <input type="text" placeholder="Usuario" formControlName="username">
+                <input type="password" placeholder="Contraseña" formControlName="password">
+                <p class="error-message" *ngIf="error">{{ error }}</p>
+                <button type="submit">Ingresar</button> <!-- Asegúrate de usar type="submit" -->
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1 class="saludo">Bienvenido nuevamente!</h1>
+                    <p>Ingrese sus datos para acceder al sistema</p>
+                    <button class="ghost" (click)="changeForm()" id="signIn">Ingresar!</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1 class="saludo">Hola!</h1>
+                    <p>Ingresa tus datos para registrarte</p>
+                    <button class="ghost" (click)="changeForm()" id="signUp">Registrarse</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

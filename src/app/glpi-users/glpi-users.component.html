@@ -1,0 +1,54 @@
+<div class="container">
+    <h2>Usuarios</h2>
+    <!-- Tabla para listar los datos -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" (click)="editUser(user)">Editar</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <h3>{{ isEditing ? 'Editar Usuario' : 'Agregar Usuario' }}</h3>
+    <!-- Formulario para agregar/editar usuarios -->
+    <form (ngSubmit)="saveUser()">
+      <div class="form-group">
+        <label for="name">Nombre</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          [(ngModel)]="currentUser.name"
+          name="name"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          [(ngModel)]="currentUser.email"
+          name="email"
+          required
+        />
+      </div>
+      <button class="btn btn-success">{{ isEditing ? 'Actualizar' : 'Guardar' }}</button>
+    </form>
+  </div>
+  

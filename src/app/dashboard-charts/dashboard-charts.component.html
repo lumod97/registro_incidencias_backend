@@ -11,7 +11,7 @@
       </div>
       
     <!-- Fila de Filtros -->
-    <div class="row mb-3">
+    <!-- <div class="row mb-3">
         <div class="col-6">
             <label for="anio">Año:</label>
             <select id="anio" formControlName="anio" class="form-select">
@@ -26,17 +26,39 @@
                 <option *ngFor="let month of ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']" [value]="month">{{ month }}</option>
             </select>
         </div>
-    </div>
+    </div> -->
   
     <div class="row">
-        <!-- Fila que ocupa las dos columnas -->
-      <div class="col-12">
-        <h2 class="text-center">Datos por Mes</h2> <!-- Título de la fila -->
-        <div class="grid-container">
-          <div class="grid-item month">{{ currentMonth }}</div>
-          <div class="grid-item" matTooltip="{{ value.name }}" matTooltipPosition="above" *ngFor="let value of monthlyValues">{{ value.value }}</div>
-        </div>
-      </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Inc. recibidas</th>
+                    <th scope="col">Inc. atendidas</th>
+                    <th scope="col">Solic. recibidas</th>
+                    <th scope="col">Solic. atendidas</th>
+                    <th scope="col">Total recibidos</th>
+                    <th scope="col">Total atendido</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Fila 1 - Nombre del mes actual -->
+                <tr>
+                    <td></td>
+                    <td>{{ currentMonth }}</td>
+                    <td>{{ randomValue(15, 1000) }}</td>
+                    <td>{{ randomValue(15, 1000) }}</td>
+                    <td>{{ randomValue(15, 1000) }}</td>
+                    <td>{{ randomValue(15, 1000) + randomValue(15, 1000) }}</td>
+                    <td>{{ randomValue(15, 1000) + randomValue(15, 1000) }}</td>
+                </tr>
+                
+                <!-- Fila 2 - Vacía -->
+                <tr>
+                    <td colspan="7"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
   
     <div class="row mt-5">
@@ -52,14 +74,29 @@
             </div>
         </div>
   
-        <!-- Columna 2 (Gráfico) -->
+        <!-- Columna 2 (Tabla) -->
         <div class="col-6">
-            <canvas baseChart
-                [datasets]="chartData.datasets"
-                [labels]="chartData.labels"
-                [type]="chartType"
-                [options]="{ responsive: true }">
-            </canvas>
+            <h2 class="text-center">Catics por Torre</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Catics por Torre</th>
+                        <th scope="col">En DEV</th>
+                        <th scope="col">En QA</th>
+                        <th scope="col">En PROD</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let torre of torres">
+                        <td>{{ torre.name }}</td>
+                        <td>{{ torre.dev }}</td>
+                        <td>{{ torre.qa }}</td>
+                        <td>{{ torre.prod }}</td>
+                        <td>{{ torre.total }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

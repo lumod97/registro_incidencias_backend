@@ -1,0 +1,39 @@
+<div class="container">
+    <h2>Torres</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let torre of torres">
+          <td>{{ torre.id }}</td>
+          <td>{{ torre.nombre }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" (click)="editTorre(torre)">Editar</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteTorre(torre.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <h3>{{ isEditing ? 'Editar' : 'Agregar' }} Torre</h3>
+    <form (ngSubmit)="saveTorre()">
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nombre"
+          [(ngModel)]="currentTorre.nombre"
+          name="nombre"
+          required
+        />
+      </div>
+      <button class="btn btn-success">{{ isEditing ? 'Actualizar' : 'Guardar' }}</button>
+    </form>
+  </div>
+  
