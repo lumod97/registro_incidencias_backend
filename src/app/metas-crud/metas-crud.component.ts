@@ -1,17 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import axiosInstance from '../axios-config';
+import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
+
+
+// Interfaces para los tipos Usuario y Torre
+interface Usuario {
+  id: number;
+  name: string;
+}
 
 @Component({
   selector: 'app-metas-crud',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgSelectModule],
   templateUrl: './metas-crud.component.html',
-  styleUrls: ['./metas-crud.component.css']  // Asegúrate de que sea 'styleUrls' no 'styleUrl'
+  styleUrls: ['./metas-crud.component.css'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
+
 export class MetasCrudComponent implements OnInit {
+  
   metas = [
     { id: 0, periodo: '', userId: '', name: '', meta: 0 }
   ];
@@ -29,6 +41,9 @@ export class MetasCrudComponent implements OnInit {
     userId: '',
   };
 
+  usuarios: Usuario[] = []; // Lista de usuarios
+
+
   editingIndex: number | null = null; // Índice de la meta en edición (null si no está en modo edición)
   editing: boolean = false; // Flag para indicar si estamos en modo edición o creación
 
@@ -38,6 +53,18 @@ export class MetasCrudComponent implements OnInit {
     if (modalElement) {
       const modal = new bootstrap.Modal(modalElement);
       modal.show();
+    }
+  }
+
+  // Obtener todos los usuarios
+  async loadUsuarios(): Promise<void> {
+    try {
+      const { data } = await axiosInstance.get('/api/glpi-users');
+      console.log(data)
+      this.usuarios = data;
+    } catch (error) {
+      console.error('Error al cargar los usuarios:', error);
+      alert('Hubo un problema al cargar los usuarios. Inténtalo de nuevo.');
     }
   }
 
@@ -116,5 +143,6 @@ export class MetasCrudComponent implements OnInit {
   // Llamada al método getDataMetas al iniciar el componente
   ngOnInit(): void {
     this.getDataMetas(); // Obtener las metas al cargar el componente
+    this.loadUsuarios(); // Cargar los usuarios al inicio
   }
 }

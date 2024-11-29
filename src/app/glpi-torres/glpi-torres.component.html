@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-between align-items-center mb-5">
     <h2>Gestión de Torres</h2>
     <!-- Botón para agregar una nueva torre -->
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTorreModal">
+    <button class="btn btn-primary" (click)="toggleModal()">
       Agregar Nueva Torre
     </button>
   </div>
@@ -28,7 +28,7 @@
   </table>
 
   <!-- Modal para agregar una nueva torre -->
-  <div class="modal fade" id="addTorreModal" tabindex="-1"   aria-labelledby="addTorreModalLabel" aria-hidden="true">
+  <div *ngIf="showModal" class="modal fade" id="addTorreModal" tabindex="-1"   aria-labelledby="addTorreModalLabel">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -62,7 +62,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
           <button type="button" class="btn btn-primary" (click)="saveTorre()">Guardar</button>
         </div>
       </div>

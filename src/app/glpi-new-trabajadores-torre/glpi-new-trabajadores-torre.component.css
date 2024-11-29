@@ -1,3 +1,6 @@
+@import "@ng-select/ng-select/themes/material.theme.css";
+
+
 /* General */
 .container {
     width: 100%;

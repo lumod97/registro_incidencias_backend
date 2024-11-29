@@ -16,13 +16,14 @@
         </div>
         <div class="col-md-3">
           <label for="filterUserId" class="form-label">Filtrar por User ID</label>
-          <input
+          <!-- <input
             type="text"
             id="filterUserId"
             class="form-control"
             [(ngModel)]="filter.userId"
             name="filterUserId"
-          />
+          /> -->
+          <ng-select [items]="usuarios" id="filterUserId" bindLabel="name" bindValue="id" [(ngModel)]="filter.userId" name="usuario" required [filterable]="true"></ng-select>
         </div>
         <div class="col-md-3 d-flex align-items-end">
           <button
@@ -89,15 +90,16 @@
                 />
               </div>
               <div class="mb-3">
-                <label for="userId" class="form-label">User ID</label>
-                <input
+                <label for="userId" class="form-label">Usuario</label>
+                <!-- <input
                   type="text"
                   id="userId"
                   class="form-control"
                   [(ngModel)]="newMeta.userId"
                   name="userId"
                   required
-                />
+                /> -->
+            <ng-select [items]="usuarios" bindLabel="name" bindValue="id" [(ngModel)]="newMeta.userId" name="usuario" required [filterable]="true"></ng-select>
               </div>
               <div class="mb-3">
                 <label for="meta" class="form-label">Meta</label>

@@ -1,7 +1,8 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-5">
     <h2>Gestión de Trabajadores por Torre</h2>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTrabajadorModal">
+    <!-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTrabajadorModal"> -->
+    <button class="btn btn-primary" (click)="toggleModal()">
       Agregar Nuevo Trabajador
     </button>
   </div>
@@ -19,40 +20,39 @@
         <td>{{ trabajador.usuario.name }}</td>
         <td>{{ trabajador.torre.nombre }}</td>
         <td>
-          <button class="btn btn-danger" (click)="deleteTrabajadorTorre(trabajador.usuario.id)">Eliminar</button>
+          <button class="btn btn-danger" (click)="deleteTrabajadorTorre(trabajador.id)">Eliminar</button>
         </td>
       </tr>
     </tbody>
   </table>
 
   <!-- Modal para agregar o editar trabajador -->
-<div class="modal fade" id="addTrabajadorModal" tabindex="-1" aria-labelledby="addTrabajadorModalLabel" aria-hidden="true">
+<div *ngIf="showModal" class="modal fade" id="addTrabajadorModal" tabindex="-1" aria-labelledby="addTrabajadorModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="addTrabajadorModalLabel">Agregar/Editar Trabajador</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" (click)="toggleModal()" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form #modalForm="ngForm">
           <div class="mb-3">
             <label for="usuario" class="form-label">Usuario</label>
-            <ng-select [items]="usuarios" bindLabel="name" bindValue="id" [(ngModel)]="currentTrabajadorTorre.usuario.id" name="usuario" required [filterable]="true">
-            </ng-select>
+            <ng-select [items]="usuarios" bindLabel="name" bindValue="id" [(ngModel)]="currentTrabajadorTorre.usuario.id" name="usuario" required [filterable]="true"></ng-select>
           </div>
           <div class="mb-3">
             <label for="torre" class="form-label">Torre</label>
-            <ng-select [items]="torres" bindLabel="nombre" bindValue="id" [(ngModel)]="currentTrabajadorTorre.torre.id" name="torre" required [filterable]="true">
-            </ng-select>
+            <ng-select [items]="torres" bindLabel="nombre" bindValue="id" [(ngModel)]="currentTrabajadorTorre.torre.id" name="torre" required [filterable]="true"></ng-select>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
         <button type="button" class="btn btn-primary" (click)="saveTrabajadorTorre()">Guardar</button>
       </div>
     </div>
   </div>
 </div>
+
 
 </div>
