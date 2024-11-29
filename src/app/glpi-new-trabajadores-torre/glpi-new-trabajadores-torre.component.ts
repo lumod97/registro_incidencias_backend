@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import axiosInstance from '../axios-config';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 
 // Interfaces para los tipos Usuario y Torre
 interface Usuario {
   id: number;
-  nombre: string;
+  name: string;
 }
 
 interface Torre {
@@ -17,7 +19,7 @@ interface Torre {
 @Component({
   selector: 'app-glpi-new-trabajadores-torre',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgSelectModule],
   templateUrl: './glpi-new-trabajadores-torre.component.html',
   styleUrls: ['./glpi-new-trabajadores-torre.component.css'],
 })
@@ -25,7 +27,7 @@ export class GlpiTrabajadoresTorreComponent implements OnInit {
   trabajadoresTorre: { usuario: Usuario, torre: Torre }[] = []; // Lista de trabajadores por torre
   usuarios: Usuario[] = []; // Lista de usuarios
   torres: Torre[] = []; // Lista de torres
-  currentTrabajadorTorre: { usuario: Usuario, torre: Torre } = { usuario: { id: 0, nombre: '' }, torre: { id: 0, nombre: '' } }; // TrabajadorTorre actual (vacío por defecto)
+  currentTrabajadorTorre: { usuario: Usuario, torre: Torre } = { usuario: { id: 0, name: '' }, torre: { id: 0, nombre: '' } }; // TrabajadorTorre actual (vacío por defecto)
   isEditing: boolean = false; // Flag para verificar si estamos editando
 
   ngOnInit(): void {
@@ -48,8 +50,9 @@ export class GlpiTrabajadoresTorreComponent implements OnInit {
   // Obtener todos los usuarios
   async loadUsuarios(): Promise<void> {
     try {
-      const response = await axiosInstance.get('/api/glpi-users');
-      this.usuarios = response.data;
+      const {data} = await axiosInstance.get('/api/glpi-users');
+      this.usuarios = data;
+      console.log(data[5])
     } catch (error) {
       console.error('Error al cargar los usuarios:', error);
       alert('Hubo un problema al cargar los usuarios. Inténtalo de nuevo.');
@@ -120,6 +123,6 @@ export class GlpiTrabajadoresTorreComponent implements OnInit {
 
   // Resetear el formulario
   resetForm(): void {
-    this.currentTrabajadorTorre = { usuario: { id: 0, nombre: '' }, torre: { id: 0, nombre: '' } };
+    this.currentTrabajadorTorre = { usuario: { id: 0, name: '' }, torre: { id: 0, nombre: '' } };
   }
 }
