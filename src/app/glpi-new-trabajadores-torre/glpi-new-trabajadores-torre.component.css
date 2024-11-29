@@ -1,0 +1,23 @@
+/* General */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Tabla */
+  .table {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 12px;
+  }
+  
+  .table .btn-danger {
+    margin-left: 5px;
+  }
+  

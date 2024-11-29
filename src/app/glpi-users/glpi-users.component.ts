@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';  // Asegúrate de importar FormsModule
+import { CommonModule } from '@angular/common'; 
+
 
 
 @Component({
   selector: 'app-glpi-users',
   standalone: true,
-  imports: [ FormsModule],
+  imports: [ FormsModule, CommonModule],
   templateUrl: './glpi-users.component.html',
   styleUrl: './glpi-users.component.css'
 })

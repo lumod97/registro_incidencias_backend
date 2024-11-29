@@ -1,52 +1,59 @@
-<div class="container">
-    <h2>Trabajadores por Torre</h2>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Trabajador</th>
-          <th>Torre</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of trabajadoresTorre">
-          <td>{{ item.id }}</td>
-          <td>{{ item.trabajador }}</td>
-          <td>{{ item.torre }}</td>
-          <td>
-            <button class="btn btn-primary btn-sm" (click)="editItem(item)">Editar</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteItem(item.id)">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <h3>{{ isEditing ? 'Editar' : 'Agregar' }} Trabajador</h3>
-    <form (ngSubmit)="saveItem()">
-      <div class="form-group">
-        <label for="trabajador">Trabajador</label>
-        <input
-          type="text"
-          class="form-control"
-          id="trabajador"
-          [(ngModel)]="currentItem.trabajador"
-          name="trabajador"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="torre">Torre</label>
-        <input
-          type="text"
-          class="form-control"
-          id="torre"
-          [(ngModel)]="currentItem.torre"
-          name="torre"
-          required
-        />
-      </div>
-      <button class="btn btn-success">{{ isEditing ? 'Actualizar' : 'Guardar' }}</button>
-    </form>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <h2>Gestión de Trabajadores por Torre</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTrabajadorModal">
+      Agregar Nuevo Trabajador
+    </button>
   </div>
-  
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Torre</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let trabajador of trabajadoresTorre; let i = index">
+        <td>{{ trabajador.usuario.nombre }}</td>
+        <td>{{ trabajador.torre.nombre }}</td>
+        <td>
+          <button class="btn btn-danger" (click)="deleteTrabajadorTorre(trabajador.usuario.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal para agregar o editar trabajador -->
+  <div class="modal fade" id="addTrabajadorModal" tabindex="-1" aria-labelledby="addTrabajadorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addTrabajadorModalLabel">Agregar/Editar Trabajador</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #modalForm="ngForm">
+            <div class="mb-3">
+              <label for="usuario" class="form-label">Usuario</label>
+              <select id="usuario" class="form-select" [(ngModel)]="currentTrabajadorTorre.usuario.id" name="usuario" required>
+                <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.nombre }}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="torre" class="form-label">Torre</label>
+              <select id="torre" class="form-select" [(ngModel)]="currentTrabajadorTorre.torre.id" name="torre" required>
+                <option *ngFor="let torre of torres" [value]="torre.id">{{ torre.nombre }}</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" (click)="saveTrabajadorTorre()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

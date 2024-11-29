@@ -1,39 +1,71 @@
-<div class="container">
-    <h2>Torres</h2>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let torre of torres">
-          <td>{{ torre.id }}</td>
-          <td>{{ torre.nombre }}</td>
-          <td>
-            <button class="btn btn-primary btn-sm" (click)="editTorre(torre)">Editar</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteTorre(torre.id)">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <h3>{{ isEditing ? 'Editar' : 'Agregar' }} Torre</h3>
-    <form (ngSubmit)="saveTorre()">
-      <div class="form-group">
-        <label for="nombre">Nombre</label>
-        <input
-          type="text"
-          class="form-control"
-          id="nombre"
-          [(ngModel)]="currentTorre.nombre"
-          name="nombre"
-          required
-        />
-      </div>
-      <button class="btn btn-success">{{ isEditing ? 'Actualizar' : 'Guardar' }}</button>
-    </form>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-5">
+    <h2>Gestión de Torres</h2>
+    <!-- Botón para agregar una nueva torre -->
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTorreModal">
+      Agregar Nueva Torre
+    </button>
   </div>
-  
+
+  <!-- Tabla de Torres -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let torre of torres; let i = index">
+        <td>{{ torre.nombre }}</td>
+        <td>{{ torre.descripcion }}</td>
+        <td>
+          <button class="btn btn-danger" (click)="deleteTorre(torre.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal para agregar una nueva torre -->
+  <div class="modal fade" id="addTorreModal" tabindex="-1"   aria-labelledby="addTorreModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addTorreModalLabel">Agregar Nueva Torre</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #modalForm="ngForm">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input
+                type="text"
+                id="nombre"
+                class="form-control"
+                [(ngModel)]="currentTorre.nombre"
+                name="nombre"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción</label>
+              <input
+                type="text"
+                id="descripcion"
+                class="form-control"
+                [(ngModel)]="currentTorre.descripcion"
+                name="descripcion"
+                required
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" (click)="saveTorre()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
