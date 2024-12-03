@@ -14,7 +14,7 @@ Chart.register(...registerables);
 Chart.register(ChartDataLabels); // Registrar el plugin de datalabels
 
 interface DataBandeja {
-  name: string;
+  torre: string;
   dev: number;
   qa: number;
   prod: number;
@@ -32,14 +32,15 @@ interface DataTabla {
 @Component({
   selector: 'app-dashboard-charts',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, BaseChartDirective, ReactiveFormsModule, MatTooltipModule, MatTooltipModule, MatProgressSpinnerModule, MatIconModule],
   templateUrl: './dashboard-charts.component.html',
   styleUrls: ['./dashboard-charts.component.css']
 })
 export class DashboardChartsComponent {
   filtrarInfo() {
-    alert("hola")
+    this.loadDataDashboard();
+    this.loadDataDashboardBandeja();
   }
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective; // Propiedad para el gráfico
   filterForm: FormGroup;
@@ -115,22 +116,50 @@ export class DashboardChartsComponent {
     }
   }
 
-  // Obtener todas las torres
   async loadDataDashboard(): Promise<void> {
     try {
-      const response = await axiosInstance.get('/tickets/get-ticket-statistics-dashboard');
-      this.dataTabla = response.data;
+      this.dataTabla = []
+      const { anio, month } = this.filterForm.value;
+
+      const response = await axiosInstance.post('/tickets/get-ticket-statistics-dashboard', {
+        anio: anio,
+        month: this.getMonthIndex(month)
+      });
+  
+      // Crear un objeto de tipo DataTabla
+      const data: DataTabla = {
+        mes: 'Diciembre', // Puedes formatear el mes como quieras
+        solicitud_recibida: response.data.solicitud_recibida,
+        solicitud_atendida: response.data.solicitud_atendida,
+        incidencia_recibida: response.data.incidencia_recibida,
+        incidencia_atendida: response.data.incidencia_atendida
+      };
+  
+      // Agregar el objeto a dataTabla
+      this.dataTabla.push(data);
+
+      console.log(this.dataTabla)
+  
     } catch (error) {
       console.error('Error al cargar la data:', error);
       alert('Hubo un problema al cargar la data. Inténtalo de nuevo.');
     }
   }
+  
+  
 
   // Obtener todas las torres
   async loadDataDashboardBandeja(): Promise<void> {
     try {
-      const response = await axiosInstance.get('/tickets/get-ticket-statistics-dashboard-bandeja');
-      this.dataBandeja = ['Diciembre', ...response.data];
+      this.dataBandeja = []
+      const { anio, month } = this.filterForm.value;
+      const response = await axiosInstance.post('/tickets/get-ticket-statistics-dashboard-bandeja',
+      {
+        anio: anio,
+        month: this.getMonthIndex(month)
+      }
+      );
+      this.dataBandeja = response.data;
     } catch (error) {
       console.error('Error al cargar la data:', error);
       alert('Hubo un problema al cargar la data. Inténtalo de nuevo.');
@@ -192,7 +221,7 @@ export class DashboardChartsComponent {
       this.chartData.labels = monthlyValues.map(item => item.name); // Asigna solo los valores al gráfico
       this.chartData.datasets[0].backgroundColor = monthlyValues.map(item => item.color); // Asigna solo los valores al gráfico
       this.chartData.datasets[0].hoverBackgroundColor = monthlyValues.map(item => item.hoverColor); // Asigna solo los valores al gráfico
-      console.log(response)
+      // console.log(response)
       if (this.chart) {
         this.chart.update();
       }
@@ -211,7 +240,7 @@ export class DashboardChartsComponent {
       'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
       'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ];
-    return months.indexOf(month);
+    return months.indexOf(month) + 1;
   }
 
   // Método para actualizar el gráfico

@@ -34,11 +34,11 @@
     </div>
 
 
+    {{dataTabla}}
     <div class="row">
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col"></th>
                     <th scope="col">Mes</th>
                     <th scope="col">Inc. recibidas</th>
                     <th scope="col">Inc. atendidas</th>
@@ -50,23 +50,18 @@
             </thead>
             <tbody>
                 <!-- Fila 1 - Nombre del mes actual -->
-                <tr>
-                    <td></td>
-                    <td>{{ currentMonth }}</td>
-                    <td>{{ randomValue(15, 1000) }}</td>
-                    <td>{{ randomValue(15, 1000) }}</td>
-                    <td>{{ randomValue(15, 1000) }}</td>
-                    <td>{{ randomValue(15, 1000) }}</td>
-                    <td>{{ randomValue(15, 1000) + randomValue(15, 1000) }}</td>
-                    <td>{{ randomValue(15, 1000) + randomValue(15, 1000) }}</td>
-                </tr>
-
-                <!-- Fila 2 - Vacía -->
-                <tr>
-                    <td colspan="7"></td>
-                </tr>
+                <tr *ngFor="let item of dataTabla">
+                    <td>{{ item.mes }}</td>
+                    <td>{{ item.incidencia_recibida }}</td>
+                    <td>{{ item.incidencia_atendida }}</td>
+                    <td>{{ item.solicitud_recibida }}</td>
+                    <td>{{ item.solicitud_atendida }}</td>
+                    <td>{{ item.solicitud_atendida + item.solicitud_recibida }}</td>
+                    <td>{{ item.incidencia_recibida + item.incidencia_atendida }}</td>
+                  </tr>
             </tbody>
         </table>
+
     </div>
 
     <div class="row mt-5">
@@ -100,7 +95,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let torre of dataBandeja">
-                        <td>{{ torre.name }}</td>
+                        <td>{{ torre.torre }}</td>
                         <td>{{ torre.dev }}</td>
                         <td>{{ torre.qa }}</td>
                         <td>{{ torre.prod }}</td>
