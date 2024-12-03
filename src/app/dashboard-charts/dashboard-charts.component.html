@@ -3,36 +3,43 @@
     <div *ngIf="isLoading" class="loader-container">
         <!-- Spinner de carga, puedes usar cualquier ícono o animación -->
         <mat-spinner></mat-spinner>
-      </div>
-      
-      <!-- Tu contenido se muestra cuando isLoading es false -->
-      <div *ngIf="!isLoading">
+    </div>
+
+    <!-- Tu contenido se muestra cuando isLoading es false -->
+    <div *ngIf="!isLoading">
         <!-- Contenido del componente, por ejemplo el gráfico -->
-      </div>
-      
+    </div>
+
     <!-- Fila de Filtros -->
-    <!-- <div class="row mb-3">
-        <div class="col-6">
+    <div class="row mb-5">
+        <div class="col-5">
             <label for="anio">Año:</label>
             <select id="anio" formControlName="anio" class="form-select">
                 <option value="">Seleccione un año</option>
                 <option *ngFor="let anio of [2020, 2021, 2022, 2023, 2024]" [value]="anio">{{ anio }}</option>
             </select>
         </div>
-        <div class="col-6">
+        <div class="col-5">
             <label for="month">Mes:</label>
             <select id="month" formControlName="month" class="form-select">
                 <option value="">Seleccione un mes</option>
-                <option *ngFor="let month of ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']" [value]="month">{{ month }}</option>
+                <option
+                    *ngFor="let month of ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']"
+                    [value]="month">{{ month }}</option>
             </select>
         </div>
-    </div> -->
-  
+        <div class="col-2 search-icon-container">
+            <i class="fas fa-search search-icon-button" (click)="filtrarInfo()"></i>
+        </div>
+    </div>
+
+
     <div class="row">
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col"></th>
+                    <th scope="col">Mes</th>
                     <th scope="col">Inc. recibidas</th>
                     <th scope="col">Inc. atendidas</th>
                     <th scope="col">Solic. recibidas</th>
@@ -49,10 +56,11 @@
                     <td>{{ randomValue(15, 1000) }}</td>
                     <td>{{ randomValue(15, 1000) }}</td>
                     <td>{{ randomValue(15, 1000) }}</td>
+                    <td>{{ randomValue(15, 1000) }}</td>
                     <td>{{ randomValue(15, 1000) + randomValue(15, 1000) }}</td>
                     <td>{{ randomValue(15, 1000) + randomValue(15, 1000) }}</td>
                 </tr>
-                
+
                 <!-- Fila 2 - Vacía -->
                 <tr>
                     <td colspan="7"></td>
@@ -60,20 +68,23 @@
             </tbody>
         </table>
     </div>
-  
+
     <div class="row mt-5">
         <!-- Segunda Fila - Columna 1 (9 Cuadros) -->
         <div class="col-6">
             <div class="row">
-                <div class="col-4" *ngFor="let item of items">
-                    <div class="box" [ngStyle]="{'background-color': getBackgroundColor(item.percentage)}">
-                        <h3>{{ item.title }}</h3>
-                        <p>{{ item.percentage }}%</p>
+                <div class="col-md-6 col-lg-4 cursor-pointer" *ngFor="let item of items">
+                    <div class="card shadow-sm text-center"
+                        [ngStyle]="{'background-color': getBackgroundColor(item.percentage)}">
+                        <div class="card-body">
+                            <h3 class="card-title fw-bold">{{ item.title }}</h3>
+                            <p class="card-text fs-5">{{ item.percentage }}%</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-  
+
         <!-- Columna 2 (Tabla) -->
         <div class="col-6">
             <h2 class="text-center">Catics por Torre</h2>
@@ -88,7 +99,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let torre of torres">
+                    <tr *ngFor="let torre of dataBandeja">
                         <td>{{ torre.name }}</td>
                         <td>{{ torre.dev }}</td>
                         <td>{{ torre.qa }}</td>
