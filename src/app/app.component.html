@@ -34,6 +34,11 @@
             <a class="nav-link" routerLink="/notifications">Notificaciones</a>
           </li>
         </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <button class="btn btn-danger" (click)="logout()">Cerrar sesión</button>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>
@@ -47,7 +52,7 @@
   <footer class="bg-light text-center text-lg-start mt-4">
     <div class="container p-4 d-flex justify-content-between align-items-center">
       <p>&copy; 2024 Caticks Manager - Todos los derechos reservados</p>
-      <p>Hora actual: {{ currentTime }}</p> 
+      <p>Hora actual: {{ currentTime }}</p>
     </div>
   </footer>
 

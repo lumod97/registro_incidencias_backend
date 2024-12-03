@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone, ViewChild, ElementRef, AfterViewInit, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { NotificationModalComponent } from "./notification-modal/notification-modal.component";
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -12,6 +12,14 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  logout(): void {
+    // Eliminar el token del almacenamiento
+    localStorage.removeItem('token');
+
+    // Redirigir a la página de login
+    this.router.navigate(['/login']);
+
+  }
   currentTime: string = '';
 
   @ViewChild(NotificationModalComponent) notificationModal!: NotificationModalComponent;
@@ -32,8 +40,8 @@ export class AppComponent implements OnInit {
     });
   }
 
-   // Método que verifica si la ruta actual es /login
-   isLoginRoute(): boolean {
+  // Método que verifica si la ruta actual es /login
+  isLoginRoute(): boolean {
 
     return this.router.url === '/login';
   }
