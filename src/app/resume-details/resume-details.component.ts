@@ -29,6 +29,10 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './resume-details.component.css'
 })
 export class ResumeDetailsComponent implements OnInit {
+openGlpiTrack(catic: string) {
+  window.open('https://catic.cajapiura.pe/glpi/front/ticket.form.php?id='+catic, '_blank')
+}
+
   ticketId: string | null = null; // Variable para almacenar el ID del ticket
   loading: boolean = false
   dataUser: any[] = [];
