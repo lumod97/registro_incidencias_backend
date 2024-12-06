@@ -1,63 +1,135 @@
 .container {
-    margin-top: 20px;
-  }
-  
-  .full-width-div {
-    background-color: #f8f9fa;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #ddd;
-  }
-  
-  .box {
-    background-color: #e9ecef;
-    border: 1px solid #ddd;
-    text-align: center;
-    padding: 20px;
-    margin: 10px 0;
-  }
-  
-  h3 {
-    font-size: 1.5rem;
-  }
-  
-  p {
-    font-size: 1.25rem;
-    font-weight: bold;
-  }
-  
+  margin-top: 20px;
+  /* padding: 20px; */
+}
 
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 7 columnas */
-    gap: 5px; /* Espacio entre celdas */
-  }
+.search-icon-container {
+  display: flex; /* Activa Flexbox */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: bottom; /* Centra verticalmente */
+  height: 100%; /* Asegura que ocupe todo el espacio disponible */
+  bottom: 0;
+}
 
-  .grid-item:first-child {
-    background-color: #f8c34a; /* Color mostaza suave */
-    padding: 20px; /* Espaciado interno */
-    text-align: center; /* Centrar texto */
-    border-radius: 5px; /* Bordes redondeados */
-    color: #797979;
-  }
-  
-  .grid-item {
-    background-color: #f8c34a; /* Color mostaza suave */
-    padding: 20px; /* Espaciado interno */
-    text-align: center; /* Centrar texto */
-    border-radius: 5px; /* Bordes redondeados */
-  }
-  
-  .month {
-    background-color: #f7a300; /* Color más acentuado para el mes */
-    font-weight: bold; /* Texto en negrita */
-  }
-  
-  .loader-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000; /* Para asegurar que el loader esté encima de otros elementos */
-  }
-  
+.search-icon-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px; /* Tamaño del botón */
+  height: 50px;
+  background-color: #f0f0f0;
+  border-radius: 50%; /* Hace el botón circular */
+  color: #555;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.search-icon-button:hover {
+  background-color: #007bff; /* Fondo en hover */
+  color: #fff; /* Color del ícono en hover */
+}
+
+
+.card {
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 2px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: clamp(0.6rem, 2.0vw, 1.0rem); /* Tamaño más pequeño */
+  /* font-size: clamp(1rem, 5vw, 3rem); /* Ajusta el tamaño dinámicamente */
+
+  white-space: nowrap; /* Evita el wrap */
+  overflow: hidden; /* Oculta el exceso de texto */
+  text-overflow: ellipsis; /* Agrega "..." si es necesario */
+  text-align: center;
+}
+
+.card-text {
+  margin: 0;
+  font-size: clamp(0.8rem, 2vw, 1.5rem); /* Escala con el contenedor */
+}
+
+
+.full-width-div {
+  background-color: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.box {
+  background-color: #e9ecef;
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 20px;
+  margin: 10px 0;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  /* 7 columnas */
+  gap: 5px;
+  /* Espacio entre celdas */
+}
+
+.grid-item:first-child {
+  background-color: #f8c34a;
+  /* Color mostaza suave */
+  padding: 20px;
+  /* Espaciado interno */
+  text-align: center;
+  /* Centrar texto */
+  border-radius: 5px;
+  /* Bordes redondeados */
+  color: #797979;
+}
+
+.grid-item {
+  background-color: #f8c34a;
+  /* Color mostaza suave */
+  padding: 20px;
+  /* Espaciado interno */
+  text-align: center;
+  /* Centrar texto */
+  border-radius: 5px;
+  /* Bordes redondeados */
+}
+
+.month {
+  background-color: #f7a300;
+  /* Color más acentuado para el mes */
+  font-weight: bold;
+  /* Texto en negrita */
+}
+
+.loader-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  /* Para asegurar que el loader esté encima de otros elementos */
+}

@@ -7,24 +7,46 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'; // Importar el plugin
 import { BaseChartDirective } from 'ng2-charts';
 import axiosInstance from '../axios-config'; // Importa la configuración de Axios
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Importa el módulo de spinner
+import { MatIconModule } from '@angular/material/icon';
+
 
 Chart.register(...registerables);
 Chart.register(ChartDataLabels); // Registrar el plugin de datalabels
 
+interface DataBandeja {
+  torre: string;
+  dev: number;
+  qa: number;
+  prod: number;
+  total: number;
+}
+
+interface DataTabla {
+  mes: string;
+  solicitud_recibida: number;
+  solicitud_atendida: number;
+  incidencia_recibida: number;
+  incidencia_atendida: number;
+}
+
 @Component({
   selector: 'app-dashboard-charts',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, BaseChartDirective, ReactiveFormsModule, MatTooltipModule, MatTooltipModule, MatProgressSpinnerModule],
+  // changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, BaseChartDirective, ReactiveFormsModule, MatTooltipModule, MatTooltipModule, MatProgressSpinnerModule, MatIconModule],
   templateUrl: './dashboard-charts.component.html',
   styleUrls: ['./dashboard-charts.component.css']
 })
 export class DashboardChartsComponent {
+  filtrarInfo() {
+    this.loadDataDashboard();
+    this.loadDataDashboardBandeja();
+  }
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective; // Propiedad para el gráfico
   filterForm: FormGroup;
 
   items = [
-    { title: 'ADMIN..', percentage: 0.00 },
+    { title: 'ADMINISTRATIVO', percentage: 0.00 },
     { title: 'CRÉDITOS', percentage: 100.00 },
     { title: 'CANALES', percentage: 100.00 },
     { title: 'COBRANZAS', percentage: 85.00 },
@@ -75,16 +97,10 @@ export class DashboardChartsComponent {
     // Inicializar el formulario
     this.filterForm = this.fb.group({
       anio: ['2024'], // Campo para el año
-      month: [''] // Campo para el mes
+      month: ['Agosto'] // Campo para el mes
     });
-
-    // Suscribirse a los cambios en el formulario
-    // this.filterForm.valueChanges.subscribe(value => {
-    //   // this.updateData(value.anio, value.month);
-    // });
   }
 
-  // Método asíncrono para inicializar los valores
   async initializeValues() {
     this.isLoading = false; // Mostrar loader
     try {
@@ -97,6 +113,56 @@ export class DashboardChartsComponent {
       console.error('Error al inicializar valores:', error);
     } finally {
       this.isLoading = false; // Ocultar loader
+    }
+  }
+
+  async loadDataDashboard(): Promise<void> {
+    try {
+      this.dataTabla = []
+      const { anio, month } = this.filterForm.value;
+
+      const response = await axiosInstance.post('/tickets/get-ticket-statistics-dashboard', {
+        anio: anio,
+        month: this.getMonthIndex(month)
+      });
+  
+      // Crear un objeto de tipo DataTabla
+      const data: DataTabla = {
+        mes: 'Diciembre', // Puedes formatear el mes como quieras
+        solicitud_recibida: response.data.solicitud_recibida,
+        solicitud_atendida: response.data.solicitud_atendida,
+        incidencia_recibida: response.data.incidencia_recibida,
+        incidencia_atendida: response.data.incidencia_atendida
+      };
+  
+      // Agregar el objeto a dataTabla
+      this.dataTabla.push(data);
+
+      console.log(this.dataTabla)
+  
+    } catch (error) {
+      console.error('Error al cargar la data:', error);
+      alert('Hubo un problema al cargar la data. Inténtalo de nuevo.');
+    }
+  }
+  
+  
+
+  // Obtener todas las torres
+  async loadDataDashboardBandeja(): Promise<void> {
+    try {
+      this.dataBandeja = []
+      const { anio, month } = this.filterForm.value;
+      const response = await axiosInstance.post('/tickets/get-ticket-statistics-dashboard-bandeja',
+      {
+        anio: anio,
+        month: this.getMonthIndex(month)
+      }
+      );
+      this.dataBandeja = response.data;
+    } catch (error) {
+      console.error('Error al cargar la data:', error);
+      alert('Hubo un problema al cargar la data. Inténtalo de nuevo.');
     }
   }
 
@@ -155,7 +221,7 @@ export class DashboardChartsComponent {
       this.chartData.labels = monthlyValues.map(item => item.name); // Asigna solo los valores al gráfico
       this.chartData.datasets[0].backgroundColor = monthlyValues.map(item => item.color); // Asigna solo los valores al gráfico
       this.chartData.datasets[0].hoverBackgroundColor = monthlyValues.map(item => item.hoverColor); // Asigna solo los valores al gráfico
-      console.log(response)
+      // console.log(response)
       if (this.chart) {
         this.chart.update();
       }
@@ -164,25 +230,17 @@ export class DashboardChartsComponent {
     }
   }
 
+
   // Propiedad para las torres
-  torres = [
-    { name: 'Torre 1', dev: 10, qa: 5, prod: 3, total: 18 },
-    { name: 'Torre 2', dev: 8, qa: 6, prod: 2, total: 16 },
-    { name: 'Torre 3', dev: 5, qa: 7, prod: 4, total: 16 },
-    { name: 'Torre 4', dev: 12, qa: 3, prod: 5, total: 20 },
-    { name: 'Torre 5', dev: 6, qa: 9, prod: 7, total: 22 },
-    { name: 'Torre 6', dev: 7, qa: 4, prod: 6, total: 17 },
-    { name: 'Torre 7', dev: 9, qa: 2, prod: 3, total: 14 },
-    { name: 'Torre 8', dev: 11, qa: 8, prod: 9, total: 28 },
-    { name: 'Torre 9', dev: 4, qa: 5, prod: 4, total: 13 }
-  ];
-  
+  dataBandeja: DataBandeja[] = [];
+  dataTabla: DataTabla[] = [];
+
   getMonthIndex(month: string): number {
     const months = [
       'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
       'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ];
-    return months.indexOf(month);
+    return months.indexOf(month) + 1;
   }
 
   // Método para actualizar el gráfico
@@ -191,6 +249,8 @@ export class DashboardChartsComponent {
   // Llamado a la inicialización al cargar el componente
   ngOnInit() {
     this.initializeValues();
+    this.loadDataDashboard();
+    this.loadDataDashboardBandeja();
   }
 
 }
