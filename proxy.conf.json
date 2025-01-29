@@ -1,9 +1,8 @@
 {
     "/tickets": {
-      "target": "http://127.0.0.1:8080",
+      "target": "http://10.0.203.132:9991/",
       "secure": false,
       "changeOrigin": true,
       "logLevel": "debug"
     }
-  }
-  
+  }  

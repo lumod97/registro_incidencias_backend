@@ -33,7 +33,7 @@ interface DataTabla {
   selector: 'app-dashboard-charts',
   standalone: true,
   // changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, BaseChartDirective, ReactiveFormsModule, MatTooltipModule, MatTooltipModule, MatProgressSpinnerModule, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MatTooltipModule, MatTooltipModule, MatProgressSpinnerModule, MatIconModule],
   templateUrl: './dashboard-charts.component.html',
   styleUrls: ['./dashboard-charts.component.css']
 })
